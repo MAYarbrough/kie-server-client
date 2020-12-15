@@ -1,5 +1,10 @@
 package demo;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+
+import org.drools.core.command.runtime.rule.HaltCommand;
 import org.kie.server.api.marshalling.MarshallingFormat;
 import org.kie.server.client.CaseServicesClient;
 import org.kie.server.client.DMNServicesClient;
@@ -25,7 +30,7 @@ public class MyAdvancedConfigurationObject {
     private static final String USER = "mike";
     private static final String PASSWORD = "mike";;
 
-    private static final MarshallingFormat FORMAT = MarshallingFormat.XSTREAM;
+    private static final MarshallingFormat FORMAT = MarshallingFormat.JSON;
 
     private static KieServicesConfiguration conf;
 
@@ -63,6 +68,8 @@ public class MyAdvancedConfigurationObject {
     public static void initializeKieServerClient() {
         conf = KieServicesFactory.newRestConfiguration(URL, USER, PASSWORD);
         conf.setMarshallingFormat(FORMAT);
+        List<Class<?>> array = Arrays.asList(new Class[]{HaltCommand.class});
+        conf.addExtraClasses(new HashSet<Class<?>>(array));
         kieServicesClient = KieServicesFactory.newKieServicesClient(conf);
     }
 
